@@ -34,4 +34,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('customer', CustomerController::class);
     Route::apiResource('order', OrderController::class);
     Route::apiResource('product', ProductController::class);
+
+    Route::post('/search', [CustomerController::class, 'search']);
 });

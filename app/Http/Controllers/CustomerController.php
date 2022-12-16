@@ -9,10 +9,58 @@ use Symfony\Component\HttpFoundation\Response;
 class CustomerController extends Controller
 {
 
-    public function index()
+    public function index(Request $request)
     {
-        return Customer::paginate();
+        $customer = Customer::paginate();
+
+        $search = $request->input('search');
+
+        $query = Customer::query();
+
+        if ($search) {
+
+            $spaceConversion = mb_convert_kana($search, 's');
+
+            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+
+
+            foreach ($wordArraySearched as $value) {
+                $query->where('name', 'like', '%' . $value . '%');
+            }
+
+            $customer = $query->paginate();
+        }
+
+        return response($customer, Response::HTTP_OK);
     }
+
+    public function search(Request $request)
+    {
+        $customer = Customer::paginate();
+
+        $search = $request->input('search');
+
+        $query = Customer::query();
+
+        if ($search) {
+
+            $spaceConversion = mb_convert_kana($search, 's');
+
+            $wordArraySearched = preg_split('/[\s,]+/', $spaceConversion, -1, PREG_SPLIT_NO_EMPTY);
+
+
+            foreach ($wordArraySearched as $value) {
+                $query->where('name', 'like', '%' . $value . '%');
+            }
+
+            $customer = $query->paginate();
+        } else {
+            return response([]);
+        }
+
+        return response($customer, Response::HTTP_OK);
+    }
+
 
 
     public function store(Request $request)
