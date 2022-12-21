@@ -1,9 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChartContoroller;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProgressContoroller;
+use App\Http\Controllers\StatusContoroller;
+use App\Models\Progress;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -36,4 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('product', ProductController::class);
 
     Route::post('/search', [CustomerController::class, 'search']);
+    Route::get('/chart/day', [ChartContoroller::class, 'day']);
+    Route::get('/progress', [ProgressContoroller::class, 'index']);
+    Route::get('/status', [StatusContoroller::class, 'index']);
 });

@@ -11,7 +11,7 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $customer = Customer::paginate();
+        $customer = Customer::with('progress')->paginate(15);
 
         $search = $request->input('search');
 
@@ -28,7 +28,7 @@ class CustomerController extends Controller
                 $query->where('name', 'like', '%' . $value . '%');
             }
 
-            $customer = $query->paginate();
+            $customer = $query->with('progress')->paginate(15);
         }
 
         return response($customer, Response::HTTP_OK);
@@ -36,7 +36,7 @@ class CustomerController extends Controller
 
     public function search(Request $request)
     {
-        $customer = Customer::paginate();
+        $customer = Customer::paginate(15);
 
         $search = $request->input('search');
 
@@ -53,7 +53,7 @@ class CustomerController extends Controller
                 $query->where('name', 'like', '%' . $value . '%');
             }
 
-            $customer = $query->paginate();
+            $customer = $query->paginate(15);
         } else {
             return response([]);
         }
@@ -84,13 +84,13 @@ class CustomerController extends Controller
         $customer = Customer::find($id);
 
         $customer->update($request->only('name', 'memo', 'tel', 'email', 'url', 'progress_id'));
-        return response($customer, Response::HTTP_ACCEPTED);
+        return response($customer->load('progress'), Response::HTTP_ACCEPTED);
     }
 
 
     public function destroy($id)
     {
-        Customer::destroy($id);
-        return response('delete success', Response::HTTP_NO_CONTENT);
+        $cusomer = Customer::destroy($id);
+        return response($id);
     }
 }
