@@ -11,7 +11,7 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $customer = Customer::with('progress')->paginate(15);
+        $customer = Customer::with('progress')->orderBy('created_at', 'desc')->paginate(15);
 
         $search = $request->input('search');
 
@@ -68,7 +68,7 @@ class CustomerController extends Controller
         $customer = Customer::create(
             $request->only('name', 'memo', 'tel', 'email', 'url', 'progress_id')
         );
-        return response($customer, Response::HTTP_CREATED);
+        return response($customer->load('progress'), Response::HTTP_CREATED);
     }
 
 
