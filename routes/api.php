@@ -37,10 +37,13 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('customer', CustomerController::class);
     Route::apiResource('order', OrderController::class);
+    Route::get('/product/page', [ProductController::class, 'indexPage']);
     Route::apiResource('product', ProductController::class);
+
 
     Route::post('/search', [CustomerController::class, 'search']);
     Route::get('/chart/day', [ChartContoroller::class, 'day']);
+    Route::get('/chart/month', [ChartContoroller::class, 'month']);
     Route::get('/progress', [ProgressContoroller::class, 'index']);
     Route::get('/status', [StatusContoroller::class, 'index']);
 });

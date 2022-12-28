@@ -14,6 +14,10 @@ class ProductController extends Controller
         return Product::all();
     }
 
+    public function indexPage()
+    {
+        return Product::paginate(10);
+    }
 
     public function store(Request $request)
     {
@@ -43,6 +47,6 @@ class ProductController extends Controller
     public function destroy($id)
     {
         Product::destroy($id);
-        return response('delete success', Response::HTTP_NO_CONTENT);
+        return response($id);
     }
 }

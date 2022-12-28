@@ -11,7 +11,7 @@ class CustomerController extends Controller
 
     public function index(Request $request)
     {
-        $customer = Customer::with('progress')->orderBy('created_at', 'desc')->paginate(15);
+        $customer = Customer::with('progress')->orderBy('created_at', 'desc')->paginate(10);
 
         $search = $request->input('search');
 
@@ -28,7 +28,7 @@ class CustomerController extends Controller
                 $query->where('name', 'like', '%' . $value . '%');
             }
 
-            $customer = $query->with('progress')->paginate(15);
+            $customer = $query->get();
         }
 
         return response($customer, Response::HTTP_OK);
@@ -36,7 +36,7 @@ class CustomerController extends Controller
 
     public function search(Request $request)
     {
-        $customer = Customer::paginate(15);
+        $customer = Customer::paginate(10);
 
         $search = $request->input('search');
 
@@ -53,7 +53,7 @@ class CustomerController extends Controller
                 $query->where('name', 'like', '%' . $value . '%');
             }
 
-            $customer = $query->paginate(15);
+            $customer = $query->paginate(10);
         } else {
             return response([]);
         }

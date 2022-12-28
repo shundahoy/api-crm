@@ -11,7 +11,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        return Order::with('products')->with('status')->with('customer')->get();
+        return Order::with('products')->with('status')->with('customer')->orderBy('created_at', 'desc')->paginate(10);
     }
 
 
@@ -56,6 +56,6 @@ class OrderController extends Controller
     public function destroy($id)
     {
         Order::destroy($id);
-        return response('delete success', Response::HTTP_NO_CONTENT);
+        return response($id);
     }
 }
